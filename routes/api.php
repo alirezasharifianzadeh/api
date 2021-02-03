@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['namespace' => 'App\Http\Controllers\api'], function() {
+    Route::post('plag/proposal', 'PlagController@proposal');
 });

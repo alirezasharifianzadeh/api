@@ -32,4 +32,20 @@ class PlagController extends Controller
             'process_time' => Proposal::whereStatus('0')->count() / 2,
         ];
     }
+
+    public function report($id) {
+        $proposal = Proposal::where('id', $id)
+            ->first(['plag_type' ,'subsentence_length', 'overlay_length', 'copy_percent' ,'status', 'created_at', 'updated_at'])->toArray();
+
+        $statuses = [0 => 'queue', 1 => 'queue', 2 => 'done', 3 => 'error'];
+
+        if($proposal['status'] == 2) {
+            $proposal['report_url'] = url("/report/{$id}");
+            $proposal['graphical_report_url'] = url("/report/{$id}/graphical");
+        }
+        
+        $proposal['status'] = $statuses[$proposal['status']];
+
+        return $proposal;
+    }
 }

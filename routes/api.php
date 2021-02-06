@@ -15,5 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'App\Http\Controllers\api'], function() {
-    Route::post('plag/proposal', 'PlagController@proposal');
+    Route::post('plag/proposals', 'PlagController@proposal');
+    Route::get('plag/proposals/{id}', 'PlagController@report');
 });

@@ -13,6 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+use App\Models\Proposal;
+
+Route::get('report/{id}/{graphical?}', function ($id, $graphical = false) {
+    $proposal = $proposal = Proposal::find($id);
+
+    $reports_path = env('REPORTS_PATH');
+    $results = json_decode(file_get_contents("{$reports_path}/{$proposal->results}"), true);
+    $reports = json_decode($proposal->report_paths, true);
+
+    foreach($reports as $key => &$value) {
+        $value = file_get_contents("{$reports_path}/{$value}");
+    }
+
+    return view('report', compact('proposal', 'reports', 'results', 'graphical'));
 });

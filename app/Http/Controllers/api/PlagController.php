@@ -21,6 +21,7 @@ class PlagController extends Controller
 
         $proposal = Proposal::create([
             'id' => $id,
+            'd_id' => $request->d_id,
             'plag_type' => "{$request->plag_type}",
             'sections' => json_encode($request->sections),
             'subsentence_length' => $request->subsentence_length,
@@ -29,12 +30,13 @@ class PlagController extends Controller
 
         return [
             'id' => $id,
+            'd_id' => $request->d_id,
             'process_time' => Proposal::whereStatus('0')->count() / 2,
         ];
     }
 
     public function report($id) {
-        $proposal = Proposal::where('id', $id)
+        $proposal = Proposal::where('d_id', $id)
             ->first(['plag_type' ,'subsentence_length', 'overlay_length', 'copy_percent' ,'status', 'created_at', 'updated_at'])->toArray();
 
         $statuses = [0 => 'queue', 1 => 'queue', 2 => 'done', 3 => 'error'];
